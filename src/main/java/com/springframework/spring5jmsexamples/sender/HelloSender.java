@@ -35,24 +35,19 @@ public class HelloSender {
 
     @Scheduled(fixedRate = 2000)
     public void sendandReceiveMessage() throws JMSException {
-
         HelloWorldMessage message = HelloWorldMessage
                 .builder()
                 .id(UUID.randomUUID())
                 .messages("Hello")
                 .build();
-
         Message receviedMsg = jmsTemplate.sendAndReceive(JmsConfig.MY_SEND_RCV_QUEUE, session -> {
             Message helloMessage;
-
             try {
                 helloMessage = session.createTextMessage(objectMapper.writeValueAsString(message));
-                helloMessage.setStringProperty("_type", "guru.springframework.sfgjms.model.HelloWorldMessage");
+                helloMessage.setStringProperty("_type", "com.springframework.spring5jmsexamples.model.HelloWorldMessage");
 
                 System.out.println("Sending Hello");
-
                 return helloMessage;
-
             } catch (JsonProcessingException e) {
                 throw new JMSException("boom");
             }
